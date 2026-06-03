@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { JsonInput } from '@/components/editor/json-input';
 import { JsonOutput } from '@/components/editor/json-output';
@@ -19,7 +18,9 @@ import {
   Copy,
   Check,
   FileJson2,
+  ArrowRightLeft,
 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import type { JsonFormatterSettings } from '@/types/formatter';
 
 const DEFAULT_JSON = `{
@@ -39,7 +40,7 @@ const DEFAULT_JSON = `{
   }
 }`;
 
-// Sort object keys recursively - must be defined before use
+// Sort object keys recursively
 function sortObjectKeys(obj: unknown): unknown {
   if (Array.isArray(obj)) {
     return obj.map(sortObjectKeys);
@@ -72,7 +73,7 @@ export function JsonFormatter() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isLoading] = useState(false);
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   // Validate JSON function
   const validateJson = useCallback((jsonString: string): { valid: boolean; error: string | null; parsed: unknown } => {
@@ -93,12 +94,9 @@ export function JsonFormatter() {
     const result = validateJson(input);
     if (result.valid) {
       let parsed = result.parsed;
-      
-      // Sort keys if enabled
       if (settings.sortKeys) {
         parsed = sortObjectKeys(parsed);
       }
-      
       const formatted = JSON.stringify(parsed, null, settings.indentSize);
       setOutput(formatted);
       setError(null);
@@ -147,7 +145,6 @@ export function JsonFormatter() {
   const handleExport = useCallback(() => {
     const textToExport = output || input;
     if (!textToExport) return;
-    
     const blob = new Blob([textToExport], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -183,6 +180,16 @@ export function JsonFormatter() {
     setSettings(prev => ({ ...prev, sortKeys: !prev.sortKeys }));
   }, [setSettings]);
 
+  // Swap input/output
+  const handleSwap = useCallback(() => {
+    if (output) {
+      setInput(output);
+      setOutput('');
+      setError(null);
+      setIsValid(false);
+    }
+  }, [output]);
+
   // Auto-format when settings change
   useEffect(() => {
     if (input && settings.validateJson) {
@@ -203,12 +210,37 @@ export function JsonFormatter() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-background">
-      {/* Header */}
-      <header className="flex h-14 items-center gap-2 border-b px-4">
-        <div className="flex items-center gap-2">
-          <FileJson2 size={20} className="text-primary" />
-          <span className="font-semibold">JSON Formatter</span>
+    <div className="flex h-screen flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      {/* Soft Header */}
+      <header className="flex h-16 items-center gap-4 border-b border-slate-200/50 bg-white/80 backdrop-blur-md px-6 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
+            <FileJson2 size={20} className="text-white" />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">JSON Formatter</h1>
+            <p className="text-xs text-slate-500">Format, validate & minify</p>
+          </div>
+        </div>
+
+        {/* Status Badge */}
+        <div className="ml-4 flex items-center gap-2">
+          {input.trim() && (
+            <div className={cn(
+              "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all",
+              isValid 
+                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" 
+                : error
+                ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+            )}>
+              <div className={cn(
+                "h-1.5 w-1.5 rounded-full",
+                isValid ? "bg-emerald-500" : error ? "bg-red-500" : "bg-slate-400"
+              )} />
+              {isValid ? "Valid" : error ? "Invalid" : "Ready"}
+            </div>
+          )}
         </div>
 
         <div className="flex-1" />
@@ -220,30 +252,49 @@ export function JsonFormatter() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0"
+                  className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
                   onClick={handleCopy}
                 >
-                  {copied ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}
+                  {copied ? <Check size={18} className="text-emerald-500" /> : <Copy size={18} />}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
-                {copied ? 'Copied!' : 'Copy to clipboard'}
-              </TooltipContent>
+              <TooltipContent>{copied ? 'Copied!' : 'Copy'}</TooltipContent>
             </Tooltip>
           )}
+
+          {output && (
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                  onClick={handleSwap}
+                >
+                  <ArrowRightLeft size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Swap</TooltipContent>
+            </Tooltip>
+          )}
+
+          <div className="mx-2 h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
           <Tooltip>
             <TooltipTrigger>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className={cn(
+                  "h-9 w-9 p-0 rounded-lg transition-all",
+                  theme === 'light' ? "bg-slate-100 text-amber-500" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                )}
                 onClick={() => setTheme('light')}
               >
                 <Sun size={18} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Light Mode</TooltipContent>
+            <TooltipContent>Light</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -251,13 +302,16 @@ export function JsonFormatter() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className={cn(
+                  "h-9 w-9 p-0 rounded-lg transition-all",
+                  theme === 'dark' ? "bg-slate-800 text-violet-400" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                )}
                 onClick={() => setTheme('dark')}
               >
                 <Moon size={18} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Dark Mode</TooltipContent>
+            <TooltipContent>Dark</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -265,21 +319,26 @@ export function JsonFormatter() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className={cn(
+                  "h-9 w-9 p-0 rounded-lg transition-all",
+                  theme === 'system' ? "bg-slate-200 dark:bg-slate-700" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                )}
                 onClick={() => setTheme('system')}
               >
                 <Monitor size={18} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>System Mode</TooltipContent>
+            <TooltipContent>System</TooltipContent>
           </Tooltip>
+
+          <div className="mx-2 h-6 w-px bg-slate-200 dark:bg-slate-700" />
 
           <Tooltip>
             <TooltipTrigger>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0"
+                className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
                 onClick={() => setIsSettingsOpen(true)}
               >
                 <Settings size={18} />
@@ -304,42 +363,53 @@ export function JsonFormatter() {
         hasContent={!!input.trim()}
       />
 
-      {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        <Tabs defaultValue="input" className="flex-1 flex flex-col">
-          <TabsList className="w-full justify-start rounded-none border-b bg-transparent p-0 h-auto">
-            <TabsTrigger
-              value="input"
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
-            >
-              Input
-            </TabsTrigger>
-            <TabsTrigger
-              value="output"
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent"
-            >
-              Output
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="input" className="flex-1 m-0">
+      {/* Side-by-Side Editor */}
+      <div className="flex flex-1 gap-4 p-4 overflow-hidden">
+        {/* Input Panel */}
+        <div className="flex flex-1 flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-200/20 dark:shadow-none overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-red-400" />
+              <div className="h-3 w-3 rounded-full bg-amber-400" />
+              <div className="h-3 w-3 rounded-full bg-emerald-400" />
+            </div>
+            <span className="ml-3 text-sm font-medium text-slate-500">Input</span>
+          </div>
+          <div className="flex-1 overflow-hidden">
             <JsonInput
               value={input}
               onChange={setInput}
               error={error}
-              className="flex-1"
+              className="h-full"
             />
-          </TabsContent>
+          </div>
+        </div>
 
-          <TabsContent value="output" className="flex-1 m-0">
+        {/* Output Panel */}
+        <div className="flex flex-1 flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-200/20 dark:shadow-none overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50">
+            <div className="flex items-center gap-2">
+              <div className="h-3 w-3 rounded-full bg-red-400" />
+              <div className="h-3 w-3 rounded-full bg-amber-400" />
+              <div className="h-3 w-3 rounded-full bg-emerald-400" />
+            </div>
+            <span className="ml-3 text-sm font-medium text-slate-500">Output</span>
+            {isValid && (
+              <div className="ml-auto flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Valid JSON
+              </div>
+            )}
+          </div>
+          <div className="flex-1 overflow-hidden">
             <JsonOutput
               content={output}
               isValid={isValid}
               error={error}
-              className="flex-1"
+              className="h-full"
             />
-          </TabsContent>
-        </Tabs>
+          </div>
+        </div>
       </div>
 
       {/* Settings Drawer */}

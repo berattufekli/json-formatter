@@ -49,7 +49,7 @@ export function SettingsDrawer({
       {/* Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-all duration-300',
+          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-all duration-300',
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={() => onOpenChange(false)}
@@ -58,26 +58,26 @@ export function SettingsDrawer({
       {/* Drawer */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-50 h-full w-full max-w-md bg-background border-l shadow-2xl transition-transform duration-300 ease-out',
+          'fixed right-0 top-0 z-50 h-full w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-2xl transition-transform duration-300 ease-out',
           open ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <Sliders className="h-5 w-5 text-primary" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
+              <Sliders className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold">Settings</h2>
-              <p className="text-sm text-muted-foreground">Customize your formatter</p>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Settings</h2>
+              <p className="text-xs text-slate-500">Customize your formatter</p>
             </div>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -89,8 +89,8 @@ export function SettingsDrawer({
             {/* Theme Section */}
             <section>
               <div className="flex items-center gap-2 mb-4">
-                <Type className="h-4 w-4 text-muted-foreground" />
-                <h3 className="text-sm font-medium">Theme</h3>
+                <Type className="h-4 w-4 text-slate-400" />
+                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Theme</h3>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {themeOptions.map((option) => {
@@ -100,13 +100,13 @@ export function SettingsDrawer({
                       key={option.id}
                       onClick={() => setTheme(option.id)}
                       className={cn(
-                        'flex flex-col items-center gap-2 rounded-lg border p-4 transition-all',
+                        'flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all',
                         theme === option.id
-                          ? 'border-primary bg-primary/5 text-primary'
-                          : 'border-border hover:border-primary/50 hover:bg-accent'
+                          ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300'
+                          : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 bg-white dark:bg-slate-800'
                       )}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className={cn("h-5 w-5", theme === option.id ? "text-violet-500" : "text-slate-400")} />
                       <span className="text-xs font-medium">{option.name}</span>
                     </button>
                   );
@@ -117,8 +117,8 @@ export function SettingsDrawer({
             {/* Font Section */}
             <section>
               <div className="flex items-center gap-2 mb-4">
-                <Type className="h-4 w-4 text-muted-foreground" />
-                <h3 className="text-sm font-medium">Font Family</h3>
+                <Type className="h-4 w-4 text-slate-400" />
+                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Font Family</h3>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {fontOptions.map((font) => (
@@ -126,29 +126,31 @@ export function SettingsDrawer({
                     key={font.id}
                     onClick={() => updateSetting('fontFamily', font.id)}
                     className={cn(
-                      'flex flex-col items-start gap-1 rounded-lg border p-4 text-left transition-all relative',
+                      'flex flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all relative',
                       font.style,
                       settings.fontFamily === font.id
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50 hover:bg-accent'
+                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 bg-white dark:bg-slate-800'
                     )}
                   >
                     {settings.fontFamily === font.id && (
-                      <Check className="absolute top-2 right-2 h-4 w-4 text-primary" />
+                      <div className="absolute top-2 right-2 h-6 w-6 rounded-full bg-violet-500 flex items-center justify-center">
+                        <Check className="h-3.5 w-3.5 text-white" />
+                      </div>
                     )}
-                    <span className="text-base font-medium">{font.name}</span>
-                    <span className="text-xs text-muted-foreground">{font.label}</span>
+                    <span className="text-sm font-semibold text-slate-900 dark:text-white">{font.name}</span>
+                    <span className="text-xs text-slate-500">{font.label}</span>
                   </button>
                 ))}
               </div>
             </section>
 
             {/* Font Size */}
-            <section className="space-y-4">
+            <section className="space-y-5">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <Label htmlFor="font-size" className="text-sm">Font Size</Label>
-                  <span className="text-sm font-medium text-primary">
+                  <Label htmlFor="font-size" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Font Size</Label>
+                  <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
                     {settings.fontSize || 14}px
                   </span>
                 </div>
@@ -159,14 +161,14 @@ export function SettingsDrawer({
                   step={1}
                   value={settings.fontSize || 14}
                   onValueChange={(value) => updateSetting('fontSize', value as number)}
-                  className="py-1"
+                  className="py-2"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <Label htmlFor="indent-size" className="text-sm">Indent Size</Label>
-                  <span className="text-sm font-medium text-primary">
+                  <Label htmlFor="indent-size" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Indent Size</Label>
+                  <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
                     {settings.indentSize || 2} spaces
                   </span>
                 </div>
@@ -177,45 +179,48 @@ export function SettingsDrawer({
                   step={2}
                   value={settings.indentSize || 2}
                   onValueChange={(value) => updateSetting('indentSize', value as number)}
-                  className="py-1"
+                  className="py-2"
                 />
               </div>
             </section>
 
             {/* Editor Options */}
-            <section>
-              <h3 className="text-sm font-medium mb-4">Editor Options</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+            <section className="space-y-4">
+              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Editor Options</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm">Sort Keys</Label>
-                    <p className="text-xs text-muted-foreground">Alphabetically sort object keys</p>
+                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Sort Keys</Label>
+                    <p className="text-xs text-slate-500">Alphabetically sort object keys</p>
                   </div>
                   <Switch
                     checked={settings.sortKeys}
                     onCheckedChange={(checked) => updateSetting('sortKeys', checked)}
+                    className="data-[state=checked]:bg-violet-500"
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm">Line Numbers</Label>
-                    <p className="text-xs text-muted-foreground">Show line numbers</p>
+                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Line Numbers</Label>
+                    <p className="text-xs text-slate-500">Show line numbers</p>
                   </div>
                   <Switch
                     checked={settings.showLineNumbers}
                     onCheckedChange={(checked) => updateSetting('showLineNumbers', checked)}
+                    className="data-[state=checked]:bg-violet-500"
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm">Auto Validate</Label>
-                    <p className="text-xs text-muted-foreground">Validate on input change</p>
+                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Auto Validate</Label>
+                    <p className="text-xs text-slate-500">Validate on input change</p>
                   </div>
                   <Switch
                     checked={settings.validateJson}
                     onCheckedChange={(checked) => updateSetting('validateJson', checked)}
+                    className="data-[state=checked]:bg-violet-500"
                   />
                 </div>
               </div>

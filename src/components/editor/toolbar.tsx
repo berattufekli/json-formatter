@@ -1,7 +1,6 @@
 'use client';
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import {
   Wand2,
@@ -32,32 +31,34 @@ interface ToolbarProps {
 interface ToolbarButtonProps {
   icon: React.ReactNode;
   label: string;
-  shortcut?: string;
   onClick: () => void;
   disabled?: boolean;
   active?: boolean;
+  variant?: 'default' | 'ghost' | 'outline';
 }
 
-function ToolbarButton({ icon, label, shortcut, onClick, disabled, active }: ToolbarButtonProps) {
+function ToolbarButton({ icon, label, onClick, disabled, active, variant = 'ghost' }: ToolbarButtonProps) {
   return (
     <Tooltip>
       <TooltipTrigger>
         <Button
-          variant={active ? 'default' : 'ghost'}
+          variant={variant}
           size="sm"
           onClick={onClick}
           disabled={disabled}
-          className="h-8 w-8 p-0"
+          className={cn(
+            "h-8 px-3 gap-2 text-xs font-medium transition-all",
+            active 
+              ? "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300 hover:bg-violet-200 dark:hover:bg-violet-900/50" 
+              : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400"
+          )}
         >
           {icon}
-          <span className="sr-only">{label}</span>
+          <span className="hidden sm:inline">{label}</span>
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="bottom" className="flex items-center gap-2">
-        <span>{label}</span>
-        {shortcut && (
-          <kbd className="text-muted-foreground">{shortcut}</kbd>
-        )}
+      <TooltipContent side="bottom" className="text-xs">
+        {label}
       </TooltipContent>
     </Tooltip>
   );
@@ -77,65 +78,61 @@ export function Toolbar({
   className,
 }: ToolbarProps) {
   return (
-    <div className={cn('flex items-center gap-1 border-b p-2', className)}>
-      <div className="flex items-center gap-1">
+    <div className={cn('flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50', className)}>
+      {/* Format Actions */}
+      <div className="flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 rounded-lg p-1">
         <ToolbarButton
-          icon={<Wand2 size={18} />}
-          label="Format JSON"
-          shortcut="Ctrl+Shift+F"
+          icon={<Wand2 size={15} />}
+          label="Format"
           onClick={onFormat}
           disabled={!hasContent}
         />
         <ToolbarButton
-          icon={<Minimize2 size={18} />}
-          label="Minify JSON"
-          shortcut="Ctrl+Shift+M"
+          icon={<Minimize2 size={15} />}
+          label="Minify"
           onClick={onMinify}
           disabled={!hasContent}
         />
         <ToolbarButton
-          icon={<CheckCircle2 size={18} />}
-          label="Validate JSON"
-          shortcut="Ctrl+Shift+V"
+          icon={<CheckCircle2 size={15} />}
+          label="Validate"
           onClick={onValidate}
           disabled={!hasContent}
         />
       </div>
 
-      <Separator orientation="vertical" className="h-6 mx-1" />
+      {/* Sort Keys */}
+      <ToolbarButton
+        icon={<AlignLeft size={15} />}
+        label={sortKeys ? "Sorted" : "Sort Keys"}
+        onClick={onSortKeys}
+        active={sortKeys}
+      />
 
+      {/* Divider */}
+      <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
+
+      {/* Clipboard Actions */}
       <div className="flex items-center gap-1">
         <ToolbarButton
-          icon={<AlignLeft size={18} />}
-          label="Sort Keys"
-          onClick={onSortKeys}
-          active={sortKeys}
-        />
-      </div>
-
-      <Separator orientation="vertical" className="h-6 mx-1" />
-
-      <div className="flex items-center gap-1">
-        <ToolbarButton
-          icon={<Copy size={18} />}
+          icon={<Copy size={15} />}
           label="Copy"
-          shortcut="Ctrl+C"
           onClick={onCopy}
           disabled={!hasContent}
         />
         <ToolbarButton
-          icon={<Download size={18} />}
+          icon={<Download size={15} />}
           label="Export"
           onClick={onExport}
           disabled={!hasContent}
         />
         <ToolbarButton
-          icon={<Upload size={18} />}
+          icon={<Upload size={15} />}
           label="Import"
           onClick={onImport}
         />
         <ToolbarButton
-          icon={<Trash2 size={18} />}
+          icon={<Trash2 size={15} />}
           label="Clear"
           onClick={onClear}
           disabled={!hasContent}
