@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { FontProvider } from "@/components/providers/font-provider";
+import { Navbar } from "@/components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +37,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JSON Formatter - Format, Validate & Minify JSON",
-  description: "A powerful tool to format, validate, and minify JSON with syntax highlighting and tree view",
+  title: "Formatter Hub - Free Online Code Formatters",
+  description: "Format, validate and minify JSON, CSS, HTML, SQL, YAML and more. Free, fast and beautiful developer tools.",
 };
 
 export default function RootLayout({
@@ -52,9 +53,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${plusJakartaSans.variable} ${firaCode.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="h-full">
-        <ThemeProvider defaultTheme="system" storageKey="json-formatter-theme">
+        <ThemeProvider defaultTheme="system" storageKey="formatter-hub-theme">
           <FontProvider>
             <TooltipProvider>
+              <Navbar />
               {children}
             </TooltipProvider>
           </FontProvider>
