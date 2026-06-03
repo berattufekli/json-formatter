@@ -1,36 +1,152 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JSON Formatter - Format, Validate & Minify
 
-## Getting Started
+A powerful and elegant tool to format, validate, and minify JSON with syntax highlighting.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-cyan?style=flat-square&logo=tailwind-css)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+![JSON Formatter Screenshot](public/screenshot.png)
+
+## 🚀 Live Demo
+
+**🌐 Production:** https://json-formatter-umber.vercel.app
+
+## ✨ Features
+
+### Core Functionality
+- **Format JSON** - Beautify with custom indentation (2-8 spaces)
+- **Minify JSON** - Compress for production use
+- **Validate JSON** - Real-time syntax validation with error messages
+- **Sort Keys** - Alphabetically sort object keys
+
+### Editor Features
+- **Input/Output Tabs** - Separate input and formatted output views
+- **Syntax Highlighting** - Easy-to-read formatted JSON
+- **Error Display** - Clear error messages for invalid JSON
+- **Line Numbers** - Optional line number display
+
+### Import/Export
+- **Import JSON** - Load .json files from your computer
+- **Export JSON** - Download formatted/minified JSON
+- **Copy to Clipboard** - One-click copy functionality
+
+### Appearance
+- **Theme Support** - Light, Dark, and System modes
+- **Font Family** - 4 modern fonts (Inter, Plus Jakarta Sans, Fira Code, JetBrains Mono)
+- **Custom Font Size** - Adjustable from 10px to 20px
+- **Auto Validate** - Real-time validation as you type
+
+## 🛠️ Tech Stack
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Next.js** | 16.2.7 | React framework with App Router |
+| **React** | 19 | UI library |
+| **TypeScript** | 5 | Type safety |
+| **Tailwind CSS** | v4 | Utility-first styling |
+| **shadcn/ui** | v4 | UI component library (base-ui) |
+| **Lucide React** | latest | Icon system |
+
+## 📁 Project Structure
+
+```
+json-formatter/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx              # Main page
+│   │   ├── layout.tsx            # Root layout with providers
+│   │   └── globals.css           # Global styles
+│   ├── components/
+│   │   ├── editor/
+│   │   │   ├── json-input.tsx     # Input textarea
+│   │   │   ├── json-output.tsx    # Output display
+│   │   │   ├── toolbar.tsx       # Action toolbar
+│   │   │   └── settings-drawer.tsx # Settings panel
+│   │   ├── providers/
+│   │   │   ├── theme-provider.tsx # Theme context
+│   │   │   └── font-provider.tsx  # Font context
+│   │   └── ui/                   # shadcn/ui components
+│   ├── hooks/
+│   │   └── use-local-storage.ts  # Persistent state
+│   └── types/
+│       └── formatter.ts           # TypeScript types
+├── public/
+│   └── screenshot.png            # App screenshot
+├── package.json
+├── tailwind.config.ts
+├── tsconfig.json
+├── components.json
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚦 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+```bash
+# Clone or navigate to project
+cd ~/Desktop/bbStudio/json-formatter
 
-To learn more about Next.js, take a look at the following resources:
+# Install dependencies
+npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Start development server
+npm run dev
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Build for production
+npm run build
 
-## Deploy on Vercel
+# Run linter
+npm run lint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Development
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to start formatting.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⌨️ Keyboard Shortcuts
+
+| Action | Description |
+|---------|-------------|
+| Format | Beautify JSON with indentation |
+| Minify | Compress JSON for production |
+| Validate | Check JSON syntax |
+| Copy | Copy to clipboard |
+| Clear | Clear all content |
+
+## 💾 Data Storage
+
+All settings are stored in browser's **localStorage**:
+- `json-formatter-settings` - Editor preferences
+
+## 🎨 Theme Modes
+
+The formatter supports three theme modes:
+- **Light** - Clean light interface
+- **Dark** - Easy on the eyes
+- **System** - Follows system preference
+
+## 📦 Components
+
+Built with shadcn/ui components:
+- Button, Input, Textarea
+- Tabs, Tooltip, TooltipProvider
+- DropdownMenu, Switch, Slider
+- ScrollArea, Separator, Skeleton
+- Badge, Card, Label
+
+## 📄 License
+
+MIT License - feel free to use and modify.
+
+---
+
+Built with ❤️ using Next.js, shadcn/ui, and Tailwind CSS
