@@ -1,44 +1,44 @@
-# JSON Formatter - Format, Validate & Minify
+# Formatter Hub - Free Online Code Formatters
 
-A powerful and elegant tool to format, validate, and minify JSON with syntax highlighting.
+A beautiful collection of free developer tools to format, validate and minify code.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
 ![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-cyan?style=flat-square&logo=tailwind-css)
 
-![JSON Formatter Screenshot](public/screenshot.png)
+![Formatter Hub Screenshot](public/screenshot.png)
 
 ## 🚀 Live Demo
 
-**🌐 Production:** https://json-formatter-bt.vercel.app
+**🌐 Production:** https://formatterhub.vercel.app
 
-**📸 Side-by-side view with modern premium UI**
+## ✨ Available Tools
 
-## ✨ Features
+| Tool | Route | Description |
+|------|-------|-------------|
+| **JSON** | /json | Format, validate and minify JSON |
+| **CSS** | /css | Beautify and minify CSS |
+| **HTML** | /html | Prettify and compress HTML |
+| **SQL** | /sql | Format SQL queries |
+| **YAML** | /yaml | Parse and format YAML |
 
-### Core Functionality
-- **Format JSON** - Beautify with custom indentation (2-8 spaces)
-- **Minify JSON** - Compress for production use
-- **Validate JSON** - Real-time syntax validation with error messages
-- **Sort Keys** - Alphabetically sort object keys
+## 🎯 Features
 
-### Editor Features
-- **Input/Output Tabs** - Separate input and formatted output views
-- **Syntax Highlighting** - Easy-to-read formatted JSON
-- **Error Display** - Clear error messages for invalid JSON
+### All Formatters Include:
+- **Format** - Beautify code with proper indentation
+- **Minify** - Compress code for production
+- **Syntax Highlighting** - Easy-to-read colored output
 - **Line Numbers** - Optional line number display
+- **Dark/Light/System Mode** - Theme switching
+- **Import/Export** - Load and save files
+- **Copy to Clipboard** - One-click copy
 
-### Import/Export
-- **Import JSON** - Load .json files from your computer
-- **Export JSON** - Download formatted/minified JSON
-- **Copy to Clipboard** - One-click copy functionality
-
-### Appearance
-- **Theme Support** - Light, Dark, and System modes
-- **Font Family** - 4 modern fonts (Inter, Plus Jakarta Sans, Fira Code, JetBrains Mono)
-- **Custom Font Size** - Adjustable from 10px to 20px
-- **Auto Validate** - Real-time validation as you type
+### UI Features:
+- Modern, clean interface
+- Side-by-side input/output panels
+- Responsive design
+- Fast and lightweight
 
 ## 🛠️ Tech Stack
 
@@ -48,7 +48,7 @@ A powerful and elegant tool to format, validate, and minify JSON with syntax hig
 | **React** | 19 | UI library |
 | **TypeScript** | 5 | Type safety |
 | **Tailwind CSS** | v4 | Utility-first styling |
-| **shadcn/ui** | v4 | UI component library (base-ui) |
+| **shadcn/ui** | v4 | UI component library |
 | **Lucide React** | latest | Icon system |
 
 ## 📁 Project Structure
@@ -57,44 +57,31 @@ A powerful and elegant tool to format, validate, and minify JSON with syntax hig
 json-formatter/
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx              # Main page
-│   │   ├── layout.tsx            # Root layout with providers
-│   │   └── globals.css           # Global styles
+│   │   ├── page.tsx              # Landing page
+│   │   ├── layout.tsx            # Root layout
+│   │   ├── json/page.tsx         # JSON formatter
+│   │   ├── css/page.tsx          # CSS formatter
+│   │   ├── html/page.tsx         # HTML formatter
+│   │   ├── sql/page.tsx           # SQL formatter
+│   │   └── yaml/page.tsx          # YAML formatter
 │   ├── components/
-│   │   ├── editor/
-│   │   │   ├── json-input.tsx     # Input textarea
-│   │   │   ├── json-output.tsx    # Output display
-│   │   │   ├── toolbar.tsx       # Action toolbar
-│   │   │   └── settings-drawer.tsx # Settings panel
-│   │   ├── providers/
-│   │   │   ├── theme-provider.tsx # Theme context
-│   │   │   └── font-provider.tsx  # Font context
-│   │   └── ui/                   # shadcn/ui components
+│   │   ├── navbar.tsx            # Navigation bar
+│   │   ├── json-formatter.tsx    # JSON formatter component
+│   │   ├── css-formatter.tsx     # CSS formatter component
+│   │   ├── html-formatter.tsx    # HTML formatter component
+│   │   ├── sql-formatter.tsx     # SQL formatter component
+│   │   ├── yaml-formatter.tsx    # YAML formatter component
+│   │   └── editor/               # Input/output components
 │   ├── hooks/
 │   │   └── use-local-storage.ts  # Persistent state
 │   └── types/
 │       └── formatter.ts           # TypeScript types
-├── public/
-│   └── screenshot.png            # App screenshot
-├── package.json
-├── tailwind.config.ts
-├── tsconfig.json
-├── components.json
 └── README.md
 ```
 
 ## 🚦 Getting Started
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
-
-### Installation
-
 ```bash
-# Clone or navigate to project
-cd ~/Desktop/bbStudio/json-formatter
-
 # Install dependencies
 npm install
 
@@ -108,42 +95,15 @@ npm run build
 npm run lint
 ```
 
-### Development
-```bash
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) to start formatting.
-
-## ⌨️ Keyboard Shortcuts
-
-| Action | Description |
-|---------|-------------|
-| Format | Beautify JSON with indentation |
-| Minify | Compress JSON for production |
-| Validate | Check JSON syntax |
-| Copy | Copy to clipboard |
-| Clear | Clear all content |
-
 ## 💾 Data Storage
 
 All settings are stored in browser's **localStorage**:
-- `json-formatter-settings` - Editor preferences
-
-## 🎨 Theme Modes
-
-The formatter supports three theme modes:
-- **Light** - Clean light interface
-- **Dark** - Easy on the eyes
-- **System** - Follows system preference
-
-## 📦 Components
-
-Built with shadcn/ui components:
-- Button, Input, Textarea
-- Tabs, Tooltip, TooltipProvider
-- DropdownMenu, Switch, Slider
-- ScrollArea, Separator, Skeleton
-- Badge, Card, Label
+- `json-formatter-settings`
+- `css-formatter-settings`
+- `html-formatter-settings`
+- `sql-formatter-settings`
+- `yaml-formatter-settings`
+- `formatter-hub-theme`
 
 ## 📄 License
 
