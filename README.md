@@ -13,6 +13,8 @@ A powerful and elegant tool to format, validate, and minify JSON with syntax hig
 
 **🌐 Production:** https://json-formatter-ten-blond.vercel.app
 
+**📸 Side-by-side view with modern premium UI**
+
 ## ✨ Features
 
 ### Core Functionality
