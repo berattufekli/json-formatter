@@ -200,7 +200,7 @@ export function JsonFormatter() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex h-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <Skeleton className="h-12 w-12 rounded-full" />
           <Skeleton className="h-4 w-32" />
@@ -210,16 +210,16 @@ export function JsonFormatter() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      {/* Soft Header */}
-      <header className="flex h-16 items-center gap-4 border-b border-slate-200/50 bg-white/80 backdrop-blur-md px-6 shadow-sm">
+    <div className="flex h-screen flex-col bg-background">
+      {/* Header */}
+      <header className="flex h-16 items-center gap-4 border-b border-border bg-card/80 backdrop-blur-xl px-6">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
             <FileJson2 size={20} className="text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">JSON Formatter</h1>
-            <p className="text-xs text-slate-500">Format, validate & minify</p>
+            <h1 className="text-lg font-bold tracking-tight text-foreground">JSON Formatter</h1>
+            <p className="text-xs text-muted-foreground">Format, validate & minify</p>
           </div>
         </div>
 
@@ -229,14 +229,14 @@ export function JsonFormatter() {
             <div className={cn(
               "flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all",
               isValid 
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" 
+                ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20" 
                 : error
-                ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                ? "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
+                : "bg-muted text-muted-foreground border border-border"
             )}>
               <div className={cn(
                 "h-1.5 w-1.5 rounded-full",
-                isValid ? "bg-emerald-500" : error ? "bg-red-500" : "bg-slate-400"
+                isValid ? "bg-emerald-500" : error ? "bg-red-500" : "bg-muted-foreground"
               )} />
               {isValid ? "Valid" : error ? "Invalid" : "Ready"}
             </div>
@@ -252,7 +252,7 @@ export function JsonFormatter() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="h-9 w-9 p-0 rounded-lg hover:bg-accent"
                   onClick={handleCopy}
                 >
                   {copied ? <Check size={18} className="text-emerald-500" /> : <Copy size={18} />}
@@ -268,7 +268,7 @@ export function JsonFormatter() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                  className="h-9 w-9 p-0 rounded-lg hover:bg-accent"
                   onClick={handleSwap}
                 >
                   <ArrowRightLeft size={18} />
@@ -278,7 +278,7 @@ export function JsonFormatter() {
             </Tooltip>
           )}
 
-          <div className="mx-2 h-6 w-px bg-slate-200 dark:bg-slate-700" />
+          <div className="mx-2 h-6 w-px bg-border" />
 
           <Tooltip>
             <TooltipTrigger>
@@ -287,7 +287,7 @@ export function JsonFormatter() {
                 size="sm"
                 className={cn(
                   "h-9 w-9 p-0 rounded-lg transition-all",
-                  theme === 'light' ? "bg-slate-100 text-amber-500" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                  theme === 'light' ? "bg-amber-500/20 text-amber-600" : "hover:bg-accent"
                 )}
                 onClick={() => setTheme('light')}
               >
@@ -304,7 +304,7 @@ export function JsonFormatter() {
                 size="sm"
                 className={cn(
                   "h-9 w-9 p-0 rounded-lg transition-all",
-                  theme === 'dark' ? "bg-slate-800 text-violet-400" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                  theme === 'dark' ? "bg-violet-500/20 text-violet-400" : "hover:bg-accent"
                 )}
                 onClick={() => setTheme('dark')}
               >
@@ -321,7 +321,7 @@ export function JsonFormatter() {
                 size="sm"
                 className={cn(
                   "h-9 w-9 p-0 rounded-lg transition-all",
-                  theme === 'system' ? "bg-slate-200 dark:bg-slate-700" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                  theme === 'system' ? "bg-muted" : "hover:bg-accent"
                 )}
                 onClick={() => setTheme('system')}
               >
@@ -331,14 +331,14 @@ export function JsonFormatter() {
             <TooltipContent>System</TooltipContent>
           </Tooltip>
 
-          <div className="mx-2 h-6 w-px bg-slate-200 dark:bg-slate-700" />
+          <div className="mx-2 h-6 w-px bg-border" />
 
           <Tooltip>
             <TooltipTrigger>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="h-9 w-9 p-0 rounded-lg hover:bg-accent"
                 onClick={() => setIsSettingsOpen(true)}
               >
                 <Settings size={18} />
@@ -366,14 +366,14 @@ export function JsonFormatter() {
       {/* Side-by-Side Editor */}
       <div className="flex flex-1 gap-4 p-4 overflow-hidden">
         {/* Input Panel */}
-        <div className="flex flex-1 flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-200/20 dark:shadow-none overflow-hidden">
-          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50">
+        <div className="flex flex-1 flex-col rounded-2xl bg-card border border-border overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-border px-4 py-3 bg-muted/30">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-red-400" />
-              <div className="h-3 w-3 rounded-full bg-amber-400" />
-              <div className="h-3 w-3 rounded-full bg-emerald-400" />
+              <div className="h-3 w-3 rounded-full bg-red-500/60" />
+              <div className="h-3 w-3 rounded-full bg-amber-500/60" />
+              <div className="h-3 w-3 rounded-full bg-emerald-500/60" />
             </div>
-            <span className="ml-3 text-sm font-medium text-slate-500">Input</span>
+            <span className="ml-3 text-sm font-medium text-muted-foreground">Input</span>
           </div>
           <div className="flex-1 overflow-hidden">
             <JsonInput
@@ -386,14 +386,14 @@ export function JsonFormatter() {
         </div>
 
         {/* Output Panel */}
-        <div className="flex flex-1 flex-col rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-700/50 shadow-xl shadow-slate-200/20 dark:shadow-none overflow-hidden">
-          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 px-4 py-3 bg-slate-50/50 dark:bg-slate-800/50">
+        <div className="flex flex-1 flex-col rounded-2xl bg-card border border-border overflow-hidden">
+          <div className="flex items-center gap-2 border-b border-border px-4 py-3 bg-muted/30">
             <div className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-red-400" />
-              <div className="h-3 w-3 rounded-full bg-amber-400" />
-              <div className="h-3 w-3 rounded-full bg-emerald-400" />
+              <div className="h-3 w-3 rounded-full bg-red-500/60" />
+              <div className="h-3 w-3 rounded-full bg-amber-500/60" />
+              <div className="h-3 w-3 rounded-full bg-emerald-500/60" />
             </div>
-            <span className="ml-3 text-sm font-medium text-slate-500">Output</span>
+            <span className="ml-3 text-sm font-medium text-muted-foreground">Output</span>
             {isValid && (
               <div className="ml-auto flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
                 <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />

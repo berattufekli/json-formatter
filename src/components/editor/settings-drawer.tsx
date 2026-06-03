@@ -49,7 +49,7 @@ export function SettingsDrawer({
       {/* Backdrop */}
       <div
         className={cn(
-          'fixed inset-0 z-50 bg-black/30 backdrop-blur-sm transition-all duration-300',
+          'fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-300',
           open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={() => onOpenChange(false)}
@@ -58,26 +58,26 @@ export function SettingsDrawer({
       {/* Drawer */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-50 h-full w-full max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-2xl transition-transform duration-300 ease-out',
+          'fixed right-0 top-0 z-50 h-full w-full max-w-md bg-card border-l border-border shadow-2xl transition-transform duration-300 ease-out',
           open ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4 bg-muted/30">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 shadow-lg shadow-violet-500/25">
               <Sliders className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Settings</h2>
-              <p className="text-xs text-slate-500">Customize your formatter</p>
+              <h2 className="text-lg font-bold text-foreground">Settings</h2>
+              <p className="text-xs text-muted-foreground">Customize your formatter</p>
             </div>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={() => onOpenChange(false)}
-            className="h-8 w-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="h-8 w-8 rounded-lg hover:bg-accent"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -89,8 +89,8 @@ export function SettingsDrawer({
             {/* Theme Section */}
             <section>
               <div className="flex items-center gap-2 mb-4">
-                <Type className="h-4 w-4 text-slate-400" />
-                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Theme</h3>
+                <Type className="h-4 w-4 text-muted-foreground" />
+                <h3 className="text-sm font-semibold text-foreground">Theme</h3>
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {themeOptions.map((option) => {
@@ -102,11 +102,11 @@ export function SettingsDrawer({
                       className={cn(
                         'flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all',
                         theme === option.id
-                          ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300'
-                          : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 bg-white dark:bg-slate-800'
+                          ? 'border-violet-500 bg-violet-500/10 text-violet-600 dark:text-violet-400'
+                          : 'border-border hover:border-violet-500/50 bg-card hover:bg-accent'
                       )}
                     >
-                      <Icon className={cn("h-5 w-5", theme === option.id ? "text-violet-500" : "text-slate-400")} />
+                      <Icon className={cn("h-5 w-5", theme === option.id ? "text-violet-500" : "text-muted-foreground")} />
                       <span className="text-xs font-medium">{option.name}</span>
                     </button>
                   );
@@ -117,8 +117,8 @@ export function SettingsDrawer({
             {/* Font Section */}
             <section>
               <div className="flex items-center gap-2 mb-4">
-                <Type className="h-4 w-4 text-slate-400" />
-                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Font Family</h3>
+                <Type className="h-4 w-4 text-muted-foreground" />
+                <h3 className="text-sm font-semibold text-foreground">Font Family</h3>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {fontOptions.map((font) => (
@@ -129,8 +129,8 @@ export function SettingsDrawer({
                       'flex flex-col items-start gap-1 rounded-xl border-2 p-4 text-left transition-all relative',
                       font.style,
                       settings.fontFamily === font.id
-                        ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20'
-                        : 'border-slate-200 dark:border-slate-700 hover:border-violet-300 dark:hover:border-violet-700 bg-white dark:bg-slate-800'
+                        ? 'border-violet-500 bg-violet-500/10'
+                        : 'border-border hover:border-violet-500/50 bg-card hover:bg-accent'
                     )}
                   >
                     {settings.fontFamily === font.id && (
@@ -138,8 +138,8 @@ export function SettingsDrawer({
                         <Check className="h-3.5 w-3.5 text-white" />
                       </div>
                     )}
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">{font.name}</span>
-                    <span className="text-xs text-slate-500">{font.label}</span>
+                    <span className="text-sm font-semibold text-foreground">{font.name}</span>
+                    <span className="text-xs text-muted-foreground">{font.label}</span>
                   </button>
                 ))}
               </div>
@@ -149,7 +149,7 @@ export function SettingsDrawer({
             <section className="space-y-5">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <Label htmlFor="font-size" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Font Size</Label>
+                  <Label htmlFor="font-size" className="text-sm font-semibold text-foreground">Font Size</Label>
                   <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
                     {settings.fontSize || 14}px
                   </span>
@@ -167,7 +167,7 @@ export function SettingsDrawer({
 
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <Label htmlFor="indent-size" className="text-sm font-semibold text-slate-700 dark:text-slate-300">Indent Size</Label>
+                  <Label htmlFor="indent-size" className="text-sm font-semibold text-foreground">Indent Size</Label>
                   <span className="text-sm font-bold text-violet-600 dark:text-violet-400">
                     {settings.indentSize || 2} spaces
                   </span>
@@ -186,12 +186,12 @@ export function SettingsDrawer({
 
             {/* Editor Options */}
             <section className="space-y-4">
-              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Editor Options</h3>
+              <h3 className="text-sm font-semibold text-foreground">Editor Options</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
+                <div className="flex items-center justify-between rounded-xl bg-muted/50 border border-border p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Sort Keys</Label>
-                    <p className="text-xs text-slate-500">Alphabetically sort object keys</p>
+                    <Label className="text-sm font-medium text-foreground">Sort Keys</Label>
+                    <p className="text-xs text-muted-foreground">Alphabetically sort object keys</p>
                   </div>
                   <Switch
                     checked={settings.sortKeys}
@@ -200,10 +200,10 @@ export function SettingsDrawer({
                   />
                 </div>
 
-                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
+                <div className="flex items-center justify-between rounded-xl bg-muted/50 border border-border p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Line Numbers</Label>
-                    <p className="text-xs text-slate-500">Show line numbers</p>
+                    <Label className="text-sm font-medium text-foreground">Line Numbers</Label>
+                    <p className="text-xs text-muted-foreground">Show line numbers</p>
                   </div>
                   <Switch
                     checked={settings.showLineNumbers}
@@ -212,10 +212,10 @@ export function SettingsDrawer({
                   />
                 </div>
 
-                <div className="flex items-center justify-between rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4">
+                <div className="flex items-center justify-between rounded-xl bg-muted/50 border border-border p-4">
                   <div className="space-y-0.5">
-                    <Label className="text-sm font-medium text-slate-900 dark:text-white">Auto Validate</Label>
-                    <p className="text-xs text-slate-500">Validate on input change</p>
+                    <Label className="text-sm font-medium text-foreground">Auto Validate</Label>
+                    <p className="text-xs text-muted-foreground">Validate on input change</p>
                   </div>
                   <Switch
                     checked={settings.validateJson}
