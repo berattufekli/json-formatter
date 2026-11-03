@@ -1,214 +1,110 @@
 import Link from 'next/link';
-import {
-  Braces,
-  FileCode2,
-  FileCode,
-  Database,
-  FileText,
-  Sparkles,
-  Zap,
-  Shield,
-  Heart,
-  ArrowRight,
-} from 'lucide-react';
+import { ArrowUpRight, Keyboard, ShieldCheck, Timer, Infinity as Free } from 'lucide-react';
+import { TOOLS } from '@/lib/tools';
+import { highlight } from '@/lib/highlight';
 
-const formatters = [
-  {
-    href: '/json',
-    label: 'JSON Formatter',
-    description: 'Format, validate and minify JSON with syntax highlighting',
-    icon: Braces,
-    color: 'from-amber-500 to-orange-600',
-    badge: 'Popular',
+const BEFORE = `{"user":{"id":42,"name":"Ada","roles":["admin","dev"]},"active":true,"score":9.5,"tags":null}`;
+const AFTER = `{
+  "user": {
+    "id": 42,
+    "name": "Ada",
+    "roles": ["admin", "dev"]
   },
-  {
-    href: '/css',
-    label: 'CSS Formatter',
-    description: 'Beautify, minify and validate CSS code',
-    icon: FileCode2,
-    color: 'from-blue-500 to-cyan-600',
-    badge: null,
-  },
-  {
-    href: '/html',
-    label: 'HTML Formatter',
-    description: 'Prettify and compress HTML markup',
-    icon: FileCode,
-    color: 'from-red-500 to-pink-600',
-    badge: null,
-  },
-  {
-    href: '/sql',
-    label: 'SQL Formatter',
-    description: 'Format and beautify SQL queries',
-    icon: Database,
-    color: 'from-emerald-500 to-teal-600',
-    badge: null,
-  },
-  {
-    href: '/yaml',
-    label: 'YAML Formatter',
-    description: 'Parse and format YAML files',
-    icon: FileText,
-    color: 'from-violet-500 to-purple-600',
-    badge: null,
-  },
+  "active": true,
+  "score": 9.5,
+  "tags": null
+}`;
+
+const PROMISES = [
+  { Icon: ShieldCheck, title: 'Stays in your browser', text: 'Nothing is uploaded. Paste a production config without a second thought.' },
+  { Icon: Timer, title: 'Formats as you type', text: 'Results appear after a short pause. No button to hunt for.' },
+  { Icon: Keyboard, title: 'Keyboard first', text: 'Ctrl/⌘ + Enter formats, Ctrl/⌘ + Shift + M minifies. Drag a file onto the editor to load it.' },
+  { Icon: Free, title: 'Free, no account', text: 'No signup, no ads, no tracking. Your last input is remembered on this device only.' },
 ];
 
-const features = [
-  {
-    icon: Sparkles,
-    title: 'Modern UI',
-    description: 'Clean, beautiful interface designed for developers',
-  },
-  {
-    icon: Zap,
-    title: 'Lightning Fast',
-    description: 'Instant formatting in your browser - no server needed',
-  },
-  {
-    icon: Shield,
-    title: 'Private & Secure',
-    description: 'Your data never leaves your browser',
-  },
-  {
-    icon: Heart,
-    title: 'Free Forever',
-    description: 'No signup, no ads, no tracking - completely free',
-  },
-];
+function Snippet({ code, language, label }: { code: string; language: string; label: string }) {
+  return (
+    <figure className="min-w-0 overflow-hidden rounded-lg border border-border bg-surface">
+      <figcaption className="border-b border-border px-4 py-2 text-[0.6875rem] font-semibold uppercase tracking-wider text-muted-foreground">{label}</figcaption>
+      <pre className="code hljs overflow-x-auto p-4 text-[0.8125rem] leading-6" dangerouslySetInnerHTML={{ __html: highlight(code, language) }} />
+    </figure>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center px-4 py-24 sm:py-32">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-r from-violet-500/20 via-purple-500/10 to-pink-500/20 blur-3xl" />
-          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-blue-500/10 blur-3xl" />
-        </div>
-
-        <div className="mx-auto max-w-4xl text-center">
-          {/* Badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/50 px-4 py-1.5 text-sm text-violet-600 dark:text-violet-400">
-            <Sparkles className="h-4 w-4" />
-            <span>100% Free & Open Source</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-              Developer Tools,
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-violet-500 to-purple-600 bg-clip-text text-transparent">
-              Beautifully Simple
-            </span>
-          </h1>
-
-          {/* Description */}
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Format, validate and minify your code with our collection of free, fast and beautiful developer tools. No signup required.
-          </p>
-
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/json"
-              className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-500 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition-all hover:shadow-violet-500/40 hover:scale-105"
-            >
-              Get Started
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="#formatters"
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              View All Tools
-            </Link>
-          </div>
+    <div className="mx-auto flex min-h-[calc(100dvh-3.5rem)] max-w-6xl flex-col px-4 sm:px-6">
+      <section className="pb-14 pt-16 sm:pt-24">
+        <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+          Five formatters, one workbench
+        </p>
+        <h1 className="max-w-3xl text-balance text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
+          Paste messy code.
+          <br />
+          <span className="text-accent">Get clean code.</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          Format, validate and minify JSON, CSS, HTML, SQL and YAML. It runs in your browser, so your data never leaves it.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Link href="/json" className="btn btn-primary !h-11 !rounded-[11px] !px-5 !text-sm">
+            Open the JSON formatter
+            <ArrowUpRight size={16} />
+          </Link>
+          <a href="#tools" className="btn !h-11 !rounded-[11px] !px-5 !text-sm">
+            All tools
+          </a>
         </div>
       </section>
 
-      {/* Formatters Grid */}
-      <section id="formatters" className="px-4 py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">All Formatters</h2>
-            <p className="mt-2 text-muted-foreground">Choose a formatter to get started</p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {formatters.map((formatter) => {
-              const Icon = formatter.icon;
-              return (
-                <Link
-                  key={formatter.href}
-                  href={formatter.href}
-                  className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/10"
-                >
-                  {/* Badge */}
-                  {formatter.badge && (
-                    <div className="absolute right-4 top-4 rounded-full bg-amber-100 dark:bg-amber-900/30 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
-                      {formatter.badge}
-                    </div>
-                  )}
-
-                  {/* Icon */}
-                  <div className={`mb-4 inline-flex rounded-xl bg-gradient-to-br ${formatter.color} p-3 shadow-lg`}>
-                    <Icon className="h-6 w-6 text-white" />
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="mb-2 text-lg font-semibold">{formatter.label}</h3>
-                  <p className="text-sm text-muted-foreground">{formatter.description}</p>
-
-                  {/* Arrow */}
-                  <div className="absolute bottom-6 right-6 opacity-0 transition-all group-hover:opacity-100">
-                    <ArrowRight className="h-5 w-5 text-violet-500 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
+      <section aria-label="Example" className="grid gap-4 pb-20 md:grid-cols-2">
+        <Snippet code={BEFORE} language="json" label="Before" />
+        <Snippet code={AFTER} language="json" label="After" />
       </section>
 
-      {/* Features */}
-      <section className="px-4 py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 text-center">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Why Choose Us?</h2>
-            <p className="mt-2 text-muted-foreground">Built with developers in mind</p>
-          </div>
-
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <div
-                  key={feature.title}
-                  className="flex flex-col items-center text-center"
-                >
-                  <div className="mb-4 rounded-2xl bg-violet-500/10 p-4">
-                    <Icon className="h-6 w-6 text-violet-600 dark:text-violet-400" />
-                  </div>
-                  <h3 className="mb-2 font-semibold">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+      <section id="tools" className="scroll-mt-20 pb-20">
+        <h2 className="mb-6 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Tools</h2>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {TOOLS.map((t, i) => (
+            <li key={t.id}>
+              <Link
+                href={`/${t.id}`}
+                className="group flex h-full flex-col justify-between gap-8 rounded-lg border border-border bg-surface p-5 transition-colors hover:border-accent"
+              >
+                <div className="flex items-start justify-between">
+                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+                  <ArrowUpRight size={18} className="text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
                 </div>
-              );
-            })}
-          </div>
-        </div>
+                <div>
+                  <h3 className="text-xl font-semibold tracking-tight">{t.label} formatter</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{t.tagline}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-auto border-t border-border py-8">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-muted-foreground">
-          <p>Built with ❤️ using Next.js, React & Tailwind CSS</p>
-          <p className="mt-1">© 2025 Formatter Hub. All rights reserved.</p>
-        </div>
+      <section className="grid gap-x-10 gap-y-8 border-t border-border py-14 sm:grid-cols-2">
+        {PROMISES.map(({ Icon, title, text }) => (
+          <div key={title} className="flex gap-4">
+            <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-accent-soft text-accent">
+              <Icon size={18} />
+            </span>
+            <div>
+              <h3 className="font-semibold">{title}</h3>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <footer className="mt-auto border-t border-border py-8 text-sm text-muted-foreground">
+        Formatter Hub · open source on{' '}
+        <a className="underline underline-offset-4 hover:text-foreground" href="https://github.com/berattufekli/json-formatter" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
       </footer>
     </div>
   );

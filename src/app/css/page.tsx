@@ -1,5 +1,14 @@
-import { CssFormatter } from '@/components/css-formatter';
+import type { Metadata } from 'next';
+import { Workbench } from '@/components/workbench/workbench';
+import { getTool } from '@/lib/tools';
 
-export default function CssPage() {
-  return <CssFormatter />;
+const tool = getTool('css')!;
+
+export const metadata: Metadata = {
+  title: `${tool.label} Formatter`,
+  description: `${tool.tagline}. Runs in your browser; nothing is uploaded.`,
+};
+
+export default function Page() {
+  return <Workbench toolId="css" />;
 }

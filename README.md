@@ -1,114 +1,72 @@
-# Formatter Hub - Free Online Code Formatters
+# Formatter Hub
 
-A beautiful collection of free developer tools to format, validate and minify code.
+Format, validate and minify **JSON, CSS, HTML, SQL and YAML** in the browser. Nothing is uploaded; everything runs on your device.
 
-![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
-![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-cyan?style=flat-square&logo=tailwind-css)
+![Formatter Hub](public/screenshot.png)
 
-![Formatter Hub Screenshot](public/screenshot.png)
+**Live:** https://formatterhub.vercel.app
 
-## 🚀 Live Demo
+## Tools
 
-**🌐 Production:** https://formatterhub.vercel.app
+| Tool | Route | Actions |
+|------|-------|---------|
+| JSON | `/json` | Format, Minify, sort keys, collapsible tree view |
+| CSS | `/css` | Format, Minify, sort properties |
+| HTML | `/html` | Format, Minify |
+| SQL | `/sql` | Format (keyword case option), Minify |
+| YAML | `/yaml` | Format, convert to JSON |
 
-## ✨ Available Tools
+## What it does
 
-| Tool | Route | Description |
-|------|-------|-------------|
-| **JSON** | /json | Format, validate and minify JSON |
-| **CSS** | /css | Beautify and minify CSS |
-| **HTML** | /html | Prettify and compress HTML |
-| **SQL** | /sql | Format SQL queries |
-| **YAML** | /yaml | Parse and format YAML |
+- One workbench for every tool: input on the left, output on the right, drag the divider to resize (or use the arrow keys)
+- Formats as you type; turn it off in **Options** and run with `Ctrl/⌘ + Enter`
+- Errors point at the exact line and column, mark the line in the editor, and *Go to line* jumps there
+- Shortcuts: `Ctrl/⌘ + Enter` runs the main action, `Ctrl/⌘ + Shift + M` runs the second (Minify / To JSON)
+- Open a file, drop one on the editor, paste from the clipboard, copy or download the result, or swap the output back into the input
+- Indent with 2, 4, 8 spaces or tabs; line numbers, text size and font (Geist Mono, JetBrains Mono, Fira Code)
+- Light, dark and system themes without a flash on load
+- Your last input and settings are remembered in this browser only
+- Phones get an Input / Output switch instead of two columns
 
-## 🎯 Features
+## Stack
 
-### All Formatters Include:
-- **Format** - Beautify code with proper indentation
-- **Minify** - Compress code for production
-- **Syntax Highlighting** - Easy-to-read colored output
-- **Line Numbers** - Optional line number display
-- **Dark/Light/System Mode** - Theme switching
-- **Import/Export** - Load and save files
-- **Copy to Clipboard** - One-click copy
+Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Base UI (popover), Lucide.
+Formatting uses [Prettier](https://prettier.io) (CSS, HTML, YAML), [sql-formatter](https://github.com/sql-formatter-org/sql-formatter) and the platform's `JSON`; [yaml](https://eemeli.org/yaml/) converts YAML to JSON and [highlight.js](https://highlightjs.org) colours the output. Formatters load on demand, so each page only fetches the one it needs.
 
-### UI Features:
-- Modern, clean interface
-- Side-by-side input/output panels
-- Responsive design
-- Fast and lightweight
-
-## 🛠️ Tech Stack
-
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 16.2.7 | React framework with App Router |
-| **React** | 19 | UI library |
-| **TypeScript** | 5 | Type safety |
-| **Tailwind CSS** | v4 | Utility-first styling |
-| **shadcn/ui** | v4 | UI component library |
-| **Lucide React** | latest | Icon system |
-
-## 📁 Project Structure
+## Structure
 
 ```
-json-formatter/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx              # Landing page
-│   │   ├── layout.tsx            # Root layout
-│   │   ├── json/page.tsx         # JSON formatter
-│   │   ├── css/page.tsx          # CSS formatter
-│   │   ├── html/page.tsx         # HTML formatter
-│   │   ├── sql/page.tsx           # SQL formatter
-│   │   └── yaml/page.tsx          # YAML formatter
-│   ├── components/
-│   │   ├── navbar.tsx            # Navigation bar
-│   │   ├── json-formatter.tsx    # JSON formatter component
-│   │   ├── css-formatter.tsx     # CSS formatter component
-│   │   ├── html-formatter.tsx    # HTML formatter component
-│   │   ├── sql-formatter.tsx     # SQL formatter component
-│   │   ├── yaml-formatter.tsx    # YAML formatter component
-│   │   └── editor/               # Input/output components
-│   ├── hooks/
-│   │   └── use-local-storage.ts  # Persistent state
-│   └── types/
-│       └── formatter.ts           # TypeScript types
-└── README.md
+src/
+├── app/                      # routes: /, /json, /css, /html, /sql, /yaml
+├── components/
+│   ├── site-header.tsx
+│   ├── theme-toggle.tsx
+│   └── workbench/            # workbench, code panes, JSON tree, options popover
+├── lib/
+│   ├── tools.ts              # the five tools: samples, actions, labels
+│   ├── highlight.ts
+│   └── formatters/           # one pure module per language + unit tests
+tests/e2e/                    # Playwright end-to-end tests
 ```
 
-## 🚦 Getting Started
+## Scripts
 
 ```bash
-# Install dependencies
 npm install
-
-# Start development server
-npm run dev
-
-# Build for production
+npm run dev        # http://localhost:3000
 npm run build
-
-# Run linter
 npm run lint
+npm test           # unit tests for the formatters (Vitest)
+npm run test:e2e   # Playwright; builds and serves the app on port 3100, uses installed Chrome
 ```
 
-## 💾 Data Storage
+## Screenshots
 
-All settings are stored in browser's **localStorage**:
-- `json-formatter-settings`
-- `css-formatter-settings`
-- `html-formatter-settings`
-- `sql-formatter-settings`
-- `yaml-formatter-settings`
-- `formatter-hub-theme`
+| | |
+|---|---|
+| ![Home](docs/screenshots/01-home.png) | ![JSON tree, dark](docs/screenshots/03-json-tree-dark.png) |
+| ![Error](docs/screenshots/04-json-error.png) | ![SQL, dark](docs/screenshots/05-sql-dark.png) |
 
-## 📄 License
+## License
 
-MIT License - feel free to use and modify.
-
----
-
-Built with ❤️ using Next.js, shadcn/ui, and Tailwind CSS
+MIT
